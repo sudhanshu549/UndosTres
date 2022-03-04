@@ -1,0 +1,57 @@
+package automation_practices;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+
+public class UndosTres {
+
+	@SuppressWarnings("deprecation")
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
+		WebDriver driver= new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		driver.get("https://prueba.undostres.com.mx");
+		driver.manage().window().maximize();
+		driver.findElement(By.xpath("//input[@suggest='mobile-operator']")).click();
+		driver.findElement(By.xpath("//li[@data-show='Telcel']")).click();
+		driver.findElement(By.xpath("//div[@to-do='mobile']//div[@class='user-interact']//div[@class='form']//ul//li//div[@class='field']//div//input[@name='mobile']")).sendKeys("8465433546");
+		driver.findElement(By.xpath("//input[@suggest='mobile-operator_amount']")).click();
+		driver.findElement(By.cssSelector("div.postload.dn:nth-child(4) div.col-sm-12.content.blueback.mh550:nth-child(3) div.col-sm-12.mainBoxWhite:nth-child(2) div.container-main-top:nth-child(2) div.action.col-sm-12 div.perform div.box.menuitem:nth-child(1) div.user-interact div.form div.field div:nth-child(1) div.suggestion:nth-child(3) ul.category-list.cat1:nth-child(2) li.category-suggest:nth-child(1) > a:nth-child(1)")).click();
+		driver.findElement(By.cssSelector("div.postload.dn:nth-child(4) div.col-sm-12.content.blueback.mh550:nth-child(3) div.col-sm-12.mainBoxWhite:nth-child(2) div.container-main-top:nth-child(2) div.action.col-sm-12 div.perform div.box.menuitem:nth-child(1) div.user-interact div.proceed div.next > button.button.buttonRecharge")).click();
+		String actual = driver.getCurrentUrl();
+		String expected ="https://prueba.undostres.com.mx/payment.php";
+		//Assert.assertSame(actual, expected);
+		
+		driver.findElement(By.xpath("//span[@id='cardGly']")).click();
+		
+		driver.findElement(By.cssSelector("label[for='radio-c'] a span")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.cssSelector("label[for='radio-c'] a span")).click();
+		driver.findElement(By.id("cardnumberunique")).sendKeys("4111111111111111");
+		driver.findElement(By.cssSelector("input[placeholder='Mes']")).sendKeys("11");
+		driver.findElement(By.cssSelector("input[placeholder='A�o']")).sendKeys("25");
+		driver.findElement(By.cssSelector("input[placeholder='CVV']")).sendKeys("111");
+		driver.findElement(By.cssSelector(".form-control.email.preventChromeAutofill")).sendKeys("test@test.com");
+		driver.findElement(By.cssSelector("button[id='paylimit'] span[class='PaymentMethod']")).click();
+		driver.findElement(By.cssSelector("#usrname")).sendKeys("automationexcersise@test.com");
+		driver.findElement(By.cssSelector("#psw")).sendKeys("123456");
+		new WebDriverWait(driver, 10).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.xpath("//iframe[starts-with(@name, 'a-') and starts-with(@src, 'https://www.google.com/recaptcha')]")));
+        new WebDriverWait(driver, 20).until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.rc-anchor-content"))).click();
+        driver.switchTo().defaultContent();
+        WebElement Submit = driver.findElement(By.id("loginBtn"));
+        new WebDriverWait(driver,10).until(ExpectedConditions.elementToBeClickable(Submit)).click();
+		WebElement success = driver.findElement(By.cssSelector(".visual-message"));
+		//Assert.assertEquals(success.getText(), "�Recarga Exitosa!");
+		
+	}
+
+}
